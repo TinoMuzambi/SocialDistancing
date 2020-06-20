@@ -1,12 +1,15 @@
 package socialDistanceShopSampleSolution;
 
+import java.util.concurrent.Semaphore;
+
 public class ShopGrid {
-    private GridBlock [][] Blocks;
+    private final GridBlock [][] Blocks;
     private final int x;
     private final int y;
     public final int checkout_y;
     private final static int minX =5;//minimum x dimension
     private final static int minY =5;//minimum y dimension
+    private Semaphore mutex;
 
 
     ShopGrid() throws InterruptedException {
@@ -26,6 +29,7 @@ public class ShopGrid {
         this.checkout_y=y-3;
         Blocks = new GridBlock[x][y];
         this.initGrid(exitBlocks);
+        mutex = new Semaphore(maxPeople);
     }
 
     private  void initGrid(int [][] exitBlocks) throws InterruptedException {
@@ -67,7 +71,9 @@ public class ShopGrid {
 
     //called by customer when entering shop
     public GridBlock enterShop() throws InterruptedException  {
+        mutex.acquire();
         GridBlock entrance = whereEntrance();
+        mutex.release();
         return entrance;
     }
 
@@ -85,13 +91,14 @@ public class ShopGrid {
         if (!inGrid(new_x,new_y)) {
             //Invalid move to outside shop - ignore
             return currentBlock;
-
         }
 
         if ((new_x==currentBlock.getX())&&(new_y==currentBlock.getY())) //not actually moving
             return currentBlock;
 
+        mutex.acquire();
         GridBlock newBlock = Blocks[new_x][new_y];
+        mutex.release();
 
         if (newBlock.get())  {  //get successful because block not occupied
             currentBlock.release(); //must release current block
@@ -104,8 +111,10 @@ public class ShopGrid {
     }
 
     //called by customer to exit the shop
-    public void leaveShop(GridBlock currentBlock)   {
+    public void leaveShop(GridBlock currentBlock) throws InterruptedException {
+        mutex.acquire();
         currentBlock.release();
+        mutex.release();
     }
 
 }
