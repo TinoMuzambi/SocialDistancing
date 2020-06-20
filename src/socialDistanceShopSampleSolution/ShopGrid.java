@@ -73,7 +73,6 @@ public class ShopGrid {
     public GridBlock enterShop() throws InterruptedException  {
         mutex.acquire();
         GridBlock entrance = whereEntrance();
-        mutex.release();
         return entrance;
     }
 
@@ -96,9 +95,7 @@ public class ShopGrid {
         if ((new_x==currentBlock.getX())&&(new_y==currentBlock.getY())) //not actually moving
             return currentBlock;
 
-        mutex.acquire();
         GridBlock newBlock = Blocks[new_x][new_y];
-        mutex.release();
 
         if (newBlock.get())  {  //get successful because block not occupied
             currentBlock.release(); //must release current block
@@ -112,7 +109,6 @@ public class ShopGrid {
 
     //called by customer to exit the shop
     public void leaveShop(GridBlock currentBlock) throws InterruptedException {
-        mutex.acquire();
         currentBlock.release();
         mutex.release();
     }

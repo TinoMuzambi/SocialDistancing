@@ -3,9 +3,10 @@ package socialDistanceShopSampleSolution;
 // GridBlock class to represent a block in the shop.
 
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GridBlock {
-    private boolean isOccupied;
+    private final AtomicBoolean isOccupied;
     private final boolean isExit;
     private final boolean isCheckoutCounter;
     private int [] coords; // the coordinate of the block.
@@ -17,7 +18,7 @@ public class GridBlock {
     GridBlock(boolean exitBlock, boolean checkoutBlock) throws InterruptedException {
         isExit=exitBlock;
         isCheckoutCounter=checkoutBlock;
-        isOccupied= false;
+        isOccupied = new AtomicBoolean(false);
         ID=classCounter;
         classCounter++;
         mutex = new Semaphore(1);
@@ -42,19 +43,19 @@ public class GridBlock {
     //for customer to move to a block
     public boolean get() throws InterruptedException {
         mutex.acquire();
-        isOccupied = true;
+        isOccupied.set(true);
         mutex.release();
         return true;
     }
 
     //for customer to leave a block
     public void release() {
-        isOccupied = false;
+        isOccupied.set(false);
     }
 
     //getter
     public boolean occupied() {
-        return isOccupied;
+        return isOccupied.get();
     }
 
     //getter
