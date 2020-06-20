@@ -8,10 +8,10 @@ public class CustomerLocation  { // this is a separate class so don't have to ac
 
     //can protect with Atomic variables or with synchronized
     private final int ID; //total customers created
-    private Color myColor;
-    private AtomicBoolean inRoom;
-    private AtomicInteger x;
-    private AtomicInteger y;
+    private final Color myColor;
+    private final AtomicBoolean inRoom;
+    private final AtomicInteger x;
+    private final AtomicInteger y;
 
     CustomerLocation(int ID ) {
         Random rand = new Random();

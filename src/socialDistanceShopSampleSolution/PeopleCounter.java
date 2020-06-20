@@ -14,7 +14,7 @@ public class PeopleCounter {
         peopleOutSide = 0;
         peopleInside = 0;
         peopleLeft = 0;
-        maxPeople = 0;
+        maxPeople = max;
         mutex = new Semaphore(max);
     }
 
@@ -45,9 +45,10 @@ public class PeopleCounter {
 
     //getter
     public void personArrived() throws InterruptedException {
-        mutex.acquire();
+//        mutex.acquire();
         peopleOutSide++;
-        mutex.release();
+        System.out.println("here " + peopleOutSide);
+//        mutex.release();
     }
 
     //update counters for a person entering the shop
