@@ -25,10 +25,14 @@ public class GridBlock {
     }
 
     //getter
-    public  int getX() {return coords[0];}
+    public  int getX() {
+        return coords[0];
+    }
 
     //getter
-    public  int getY() {return coords[1];}
+    public  int getY() {
+        return coords[1];
+    }
 
     //for customer to move to a block
     public boolean get() throws InterruptedException {
@@ -57,5 +61,7 @@ public class GridBlock {
     }
 
     //getter
-    public int getID() {return this.ID;}
+    public int getID() {
+        return this.ID;
+    }
 }

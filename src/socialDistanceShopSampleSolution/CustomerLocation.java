@@ -25,29 +25,41 @@ public class CustomerLocation  { // this is a separate class so don't have to ac
 
 
     //setter
-    public  void  setX(int x) { this.x.set(x);}
+    public void setX(int x) {
+        this.x.set(x);
+    }
 
     //setter
-    public   void  setY(int y) {	this.y.set(y);	}
+    public void setY(int y) {
+        this.y.set(y);
+    }
 
     //setter
-    public  void setInRoom(boolean in) {
+    public void setInRoom(boolean in) {
         this.inRoom.set(in);
     }
     //getter
-    public  int getX() { return x.get();}
+    public int getX() {
+        return x.get();
+    }
 
     //getter
-    public  int getY() {	return y.get();	}
+    public int getY() {
+        return y.get();
+    }
 
     //getter
-    public  int getID() {	return ID;	}
+    public  int getID() {
+        return ID;
+    }
 
     //getter
     public  boolean inRoom() {
         return inRoom.get();
     }
     //getter
-    public synchronized  Color getColor() { return myColor; }
+    public synchronized  Color getColor() {
+        return myColor;
+    }
 
 }
