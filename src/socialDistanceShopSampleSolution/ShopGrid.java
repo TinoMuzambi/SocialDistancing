@@ -10,6 +10,7 @@ public class ShopGrid {
     private final static int minX =5;//minimum x dimension
     private final static int minY =5;//minimum y dimension
     private Semaphore maxInside;
+    private Semaphore entranceLock;
 
     ShopGrid() throws InterruptedException {
         this.x=20;
@@ -29,6 +30,7 @@ public class ShopGrid {
         Blocks = new GridBlock[x][y];
         this.initGrid(exitBlocks);
         maxInside = new Semaphore(maxPeople, true);
+        entranceLock = new Semaphore(1);
     }
 
     private  void initGrid(int [][] exitBlocks) throws InterruptedException {
@@ -71,6 +73,8 @@ public class ShopGrid {
     //called by customer when entering shop
     public GridBlock enterShop() throws InterruptedException  {
         maxInside.acquire();
+        entranceLock.acquire();
+        System.out.println("Got entrance lock. " + entranceLock.availablePermits());
         GridBlock entrance = whereEntrance();
         return entrance;
     }
@@ -96,8 +100,13 @@ public class ShopGrid {
 
         GridBlock newBlock = Blocks[new_x][new_y];
 
-        if (newBlock.get())  {  //get successful because block not occupied
+        if (!newBlock.occupied())  {  //get successful because block not occupied
+            newBlock.get();
             currentBlock.release(); //must release current block
+            if (newBlock != whereEntrance()) {
+                entranceLock.release();
+                System.out.println("Released entrance lock. " + entranceLock.availablePermits());
+            }
         }
         else {
             newBlock=currentBlock;

@@ -15,16 +15,15 @@ public class GridBlock {
     public static int classCounter=0;
     private Semaphore mutex;
 
-    GridBlock(boolean exitBlock, boolean checkoutBlock) throws InterruptedException {
+    GridBlock(boolean exitBlock, boolean checkoutBlock) {
         isExit = new AtomicBoolean(exitBlock);
         isCheckoutCounter = new AtomicBoolean(checkoutBlock);
         isOccupied = new AtomicBoolean(false);
         ID=classCounter;
         classCounter++;
-        mutex = new Semaphore(1);
     }
 
-    GridBlock(int x, int y, boolean exitBlock, boolean refreshBlock) throws InterruptedException {
+    GridBlock(int x, int y, boolean exitBlock, boolean refreshBlock) {
         this(exitBlock,refreshBlock);
         coords = new int [] {x,y};
         mutex = new Semaphore(1);
@@ -49,7 +48,7 @@ public class GridBlock {
     }
 
     //for customer to leave a block
-    public void release() {
+    public void release() throws InterruptedException {
         isOccupied.set(false);
     }
 
