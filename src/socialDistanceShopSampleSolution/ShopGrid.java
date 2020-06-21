@@ -9,9 +9,9 @@ public class ShopGrid {
     public final int checkout_y;
     private final static int minX =5;//minimum x dimension
     private final static int minY =5;//minimum y dimension
-    private Semaphore maxInside;
-    private Semaphore entranceLock;
-    private Semaphore full;
+    private Semaphore maxInside;    // Semaphore for max people inside shop.
+    private Semaphore entranceLock; // Semaphore for ensuring only one person at the entrance at any one time.
+    private Semaphore full;         // Semaphore to check if shop is has people.
 
     ShopGrid() throws InterruptedException {
         this.x=20;
@@ -30,8 +30,8 @@ public class ShopGrid {
         this.checkout_y=y-3;
         Blocks = new GridBlock[x][y];
         this.initGrid(exitBlocks);
-        maxInside = new Semaphore(maxPeople);
-        entranceLock = new Semaphore(1);
+        maxInside = new Semaphore(maxPeople);       // Max of maxPeople at a time inside.
+        entranceLock = new Semaphore(1);     // One person at the entrance at a time.
         full = new Semaphore(0);
     }
 
@@ -74,12 +74,11 @@ public class ShopGrid {
 
     //called by customer when entering shop
     public GridBlock enterShop() throws InterruptedException  {
-        maxInside.acquire();
-        entranceLock.acquire();
+        maxInside.acquire();    // decrement whilst there's space in shop.
+        entranceLock.acquire(); // enter if no one else is at entrance.
         GridBlock entrance = whereEntrance();
         entrance.get();
-
-        full.release();
+        full.release(); // add a permit to full.
         return entrance;
     }
 
@@ -107,7 +106,7 @@ public class ShopGrid {
         if (!newBlock.occupied())  {  //get successful because block not occupied
             newBlock.get();
             currentBlock.release(); //must release current block
-            entranceLock.release();
+            entranceLock.release(); // release once moved.
         }
         else {
             newBlock=currentBlock;
