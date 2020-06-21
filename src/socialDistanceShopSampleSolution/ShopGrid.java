@@ -30,7 +30,7 @@ public class ShopGrid {
         this.checkout_y=y-3;
         Blocks = new GridBlock[x][y];
         this.initGrid(exitBlocks);
-        maxInside = new Semaphore(maxPeople, true);
+        maxInside = new Semaphore(maxPeople);
         entranceLock = new Semaphore(1);
         full = new Semaphore(0);
     }
@@ -78,7 +78,7 @@ public class ShopGrid {
         entranceLock.acquire();
         GridBlock entrance = whereEntrance();
         entrance.get();
-        entranceLock.release();
+
         full.release();
         return entrance;
     }
@@ -107,6 +107,7 @@ public class ShopGrid {
         if (!newBlock.occupied())  {  //get successful because block not occupied
             newBlock.get();
             currentBlock.release(); //must release current block
+            entranceLock.release();
         }
         else {
             newBlock=currentBlock;

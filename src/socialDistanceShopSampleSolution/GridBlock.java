@@ -48,7 +48,7 @@ public class GridBlock {
     }
 
     //for customer to leave a block
-    public void release() throws InterruptedException {
+    public void release() {
         isOccupied.set(false);
     }
 
