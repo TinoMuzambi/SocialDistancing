@@ -1,8 +1,9 @@
 package socialDistanceShopSampleSolution;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Random;
-import java.util.concurrent.atomic.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CustomerLocation  { // this is a separate class so don't have to access thread
 

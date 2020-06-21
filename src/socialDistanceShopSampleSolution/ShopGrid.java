@@ -13,7 +13,7 @@ public class ShopGrid {
     private Semaphore entranceLock; // Semaphore for ensuring only one person at the entrance at any one time.
     private Semaphore full;         // Semaphore to check if shop is has people.
 
-    ShopGrid() throws InterruptedException {
+    ShopGrid() {
         this.x=20;
         this.y=20;
         this.checkout_y=y-3;
@@ -22,7 +22,7 @@ public class ShopGrid {
         this.initGrid(dfltExit);
     }
 
-    ShopGrid(int x, int y, int [][] exitBlocks,int maxPeople) throws InterruptedException {
+    ShopGrid(int x, int y, int [][] exitBlocks,int maxPeople) {
         if (x<minX) x=minX; //minimum x
         if (y<minY) y=minY; //minimum x
         this.x=x;
@@ -35,7 +35,7 @@ public class ShopGrid {
         full = new Semaphore(0);
     }
 
-    private  void initGrid(int [][] exitBlocks) throws InterruptedException {
+    private  void initGrid(int [][] exitBlocks) {
         for (int i=0;i<x;i++) {
             for (int j=0;j<y;j++) {
                 boolean exit=false;

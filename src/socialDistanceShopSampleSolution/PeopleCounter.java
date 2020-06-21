@@ -1,6 +1,5 @@
 package socialDistanceShopSampleSolution;
 
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 //class to keep track of people inside and outside and left shop
