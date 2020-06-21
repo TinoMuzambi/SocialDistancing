@@ -47,7 +47,6 @@ public class PeopleCounter {
     public void personArrived() throws InterruptedException {
         mutex.acquire();
         peopleOutSide++;
-        System.out.println("here " + peopleOutSide);
         mutex.release();
     }
 

@@ -7,8 +7,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GridBlock {
     private final AtomicBoolean isOccupied;
-    private final boolean isExit;
-    private final boolean isCheckoutCounter;
+    private final AtomicBoolean isExit;
+    private final AtomicBoolean isCheckoutCounter;
     private int [] coords; // the coordinate of the block.
     private final int ID;
 
@@ -16,8 +16,8 @@ public class GridBlock {
     private Semaphore mutex;
 
     GridBlock(boolean exitBlock, boolean checkoutBlock) throws InterruptedException {
-        isExit=exitBlock;
-        isCheckoutCounter=checkoutBlock;
+        isExit = new AtomicBoolean(exitBlock);
+        isCheckoutCounter = new AtomicBoolean(checkoutBlock);
         isOccupied = new AtomicBoolean(false);
         ID=classCounter;
         classCounter++;
@@ -60,12 +60,12 @@ public class GridBlock {
 
     //getter
     public boolean isExit() {
-        return isExit;
+        return isExit.get();
     }
 
     //getter
     public boolean isCheckoutCounter() {
-        return isCheckoutCounter;
+        return isCheckoutCounter.get();
     }
 
     //getter

@@ -9,8 +9,7 @@ public class ShopGrid {
     public final int checkout_y;
     private final static int minX =5;//minimum x dimension
     private final static int minY =5;//minimum y dimension
-    private Semaphore mutex;
-
+    private Semaphore maxInside;
 
     ShopGrid() throws InterruptedException {
         this.x=20;
@@ -29,7 +28,7 @@ public class ShopGrid {
         this.checkout_y=y-3;
         Blocks = new GridBlock[x][y];
         this.initGrid(exitBlocks);
-        mutex = new Semaphore(maxPeople);
+        maxInside = new Semaphore(maxPeople, true);
     }
 
     private  void initGrid(int [][] exitBlocks) throws InterruptedException {
@@ -71,7 +70,7 @@ public class ShopGrid {
 
     //called by customer when entering shop
     public GridBlock enterShop() throws InterruptedException  {
-        mutex.acquire();
+        maxInside.acquire();
         GridBlock entrance = whereEntrance();
         return entrance;
     }
@@ -110,7 +109,7 @@ public class ShopGrid {
     //called by customer to exit the shop
     public void leaveShop(GridBlock currentBlock) throws InterruptedException {
         currentBlock.release();
-        mutex.release();
+        maxInside.release();
     }
 
 }
